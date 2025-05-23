@@ -6,8 +6,8 @@ import Navbar from '@/components/Navbar';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Sublet Web',
-  description: 'Sublet App Web Version',
+  title: 'Sublet Finder',
+  description: 'Sublet Finder Web App',
 };
 
 export default function RootLayout({

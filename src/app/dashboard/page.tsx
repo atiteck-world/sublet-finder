@@ -11,7 +11,7 @@ export default function DashboardPage() {
     <ProtectedRoute>
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-        <p>Welcome, {user?.email} 🎉</p>
+        <p>Welcome, {user?.email}</p>
       </div>
 
     </ProtectedRoute>
