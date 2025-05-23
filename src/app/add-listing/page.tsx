@@ -2,13 +2,16 @@
 
 import { useState } from 'react';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import { useAuth } from '@/context/AuthContext';
 
 export default function AddListingPage() {
+  const {user} = useAuth();
+
   const [formData, setFormData] = useState({
   title: '',
   description: '',
   location: '',
-  fullAddress: '', // ✅ new field
+  fullAddress: '',
   price: '',
   image: null as File | null,
 });
@@ -24,10 +27,39 @@ export default function AddListingPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Submit Listing:', formData);
-    alert('Listing submitted (not yet connected to backend)');
+    if(!user) return alert("Not Authencicated...");
+
+    try{
+      const token = await user.getIdToken();
+
+      const body = new FormData();
+      body.append('title', formData.title);
+      body.append('description', formData.description);
+      body.append('location', formData.location);
+      body.append('full_address', formData.fullAddress);
+      body.append('price', formData.price);
+
+      if(formData.image){
+        body.append('image', formData.image);
+      }
+
+      const response = await fetch('http://127.0.0.1:8000/api/listings/', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body,
+      });
+
+      if(!response.ok) throw new Error('Failed to submit listing');
+      alert('Listing submitted successfully.');
+
+    }catch (err: any) {
+      console.error(err);
+      alert(err.message);
+    }
   };
 
   return (
@@ -63,11 +95,11 @@ export default function AddListingPage() {
             className="w-full p-2 border rounded"
           />
           <textarea
-            name="Address"
+            name="fullAddress"
             placeholder="Full Address"
             required
             rows={4}
-            value={formData.description}
+            value={formData.fullAddress}
             onChange={handleChange}
             className="w-full p-2 border rounded"
           />

@@ -11,6 +11,7 @@ const navItems = [
   { label: 'My Listings', href: '/my-listings' },
   { label: 'Add Listing', href: '/add-listing' },
   { label: 'Profile', href: '/profile' },
+  { label: 'Inbox', href: '/inbox' },
 ];
 
 export default function Navbar() {
